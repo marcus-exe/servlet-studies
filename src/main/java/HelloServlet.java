@@ -1,6 +1,7 @@
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("text/plain");
         response.getWriter().append("Served at: ").append(request.getContextPath());
 
+        // TEST 3: HEADERS //
         Enumeration<String> headers = request.getHeaderNames();
         StringBuilder totalOutput = new StringBuilder("Output:\n");
         while (headers.hasMoreElements()) {
@@ -41,5 +43,13 @@ public class HelloServlet extends HttpServlet {
             totalOutput.append(headerName).append(": ").append(headerValue).append("\n");
         }
         System.out.println(totalOutput);
+
+        // TEST 4: COOKIES //
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            System.out.println(cookie.getName()+": "+cookie.getValue());
+        }
+        Cookie myCookie = new Cookie("myCookie", "myValue");
+        response.addCookie(myCookie);
     }
 }
