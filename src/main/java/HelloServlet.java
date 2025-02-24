@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
@@ -17,10 +18,28 @@ public class HelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // TEST 1 //
         response.setContentType("text/html");
         response.getWriter().println("<h1>Hello from Tomcat Servlet!</h1>");
+
+        // TEST 2 //
+        doPost(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {}
+            throws ServletException, IOException {
+        // TEST 2 //
+        response.setContentType("text/plain");
+        response.getWriter().append("Served at: ").append(request.getContextPath());
+
+        Enumeration<String> headers = request.getHeaderNames();
+        StringBuilder totalOutput = new StringBuilder("Output:\n");
+        while (headers.hasMoreElements()) {
+            String headerName = headers.nextElement();
+            String headerValue = request.getHeader(headerName);
+            totalOutput.append(headerName).append(": ").append(headerValue).append("\n");
+        }
+        System.out.println(totalOutput);
+    }
 }
